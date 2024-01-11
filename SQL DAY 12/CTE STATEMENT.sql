@@ -1,0 +1,17 @@
+--TOPIC : CTE COMMON TABLE EXPRESSION
+
+USE [SQL B];
+
+WITH CTE_EMPLOYEE AS 
+(
+SELECT FirstName,LastName,Gender,Salary,
+COUNT(Gender) OVER (PARTITION BY Gender) AS TOTALGENDER,
+AVG(Salary) OVER (PARTITION BY Gender) AS AVGSALARY
+FROM EmployeeDemographics AS ED
+INNER JOIN EmployeeSalary ES
+ON ED.EmployeeID = ES.employeeID
+WHERE Salary > 45000 
+)
+
+SELECT FirstName,AVGSALARY 
+FROM CTE_EMPLOYEE
